@@ -19,7 +19,7 @@ module.exports = (req, res, next) => {
       NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
     );
   } catch (err) {
-    next(new UnauthorizedError('Невалидный jwt-токен'));
+    next(new UnauthorizedError(' jwt-токен'));
   }
   req.user = payload;
 
