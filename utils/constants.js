@@ -1,4 +1,4 @@
-module.exports.DB_ADDRESS_DEFAULT = 'mongodb://localhost:27017/bitfilmsdb';
+module.exports.DB_ADDRESS_DEFAULT = 'mongodb://localhost:27017/moviesdb';
 
 module.exports.DEV_SECRET = 'dev-secret';
 

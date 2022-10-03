@@ -10,6 +10,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const router = require('./routes/index');
 const { DB_ADDRESS_DEFAULT } = require('./utils/constants');
 const errorHandler = require('./middlewares/errorHandler');
+const { rateLimiter } = require('./middlewares/rateLimiter');
 
 const { PORT = 3000, DB_ADDRESS = DB_ADDRESS_DEFAULT } = process.env;
 
@@ -27,6 +28,7 @@ mongoose.connect(DB_ADDRESS, {
     console.log(`Ошибка: ${err}`);
   });
 
+app.use(rateLimiter);
 app.use(helmet());
 
 app.use(cors());
