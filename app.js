@@ -8,14 +8,14 @@ const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const router = require('./routes/index');
-const { DB_ADDRESS_DEV } = require('./utils/constants');
+const { DB_ADDRESS_DEFAULT } = require('./utils/constants');
 const errorHandler = require('./middlewares/errorHandler');
 
-const { PORT = 3000, NODE_ENV, DB_ADDRESS } = process.env;
+const { PORT = 3000, DB_ADDRESS = DB_ADDRESS_DEFAULT } = process.env;
 
 const app = express();
 
-mongoose.connect(NODE_ENV === 'production' ? DB_ADDRESS : DB_ADDRESS_DEV, {
+mongoose.connect(DB_ADDRESS, {
   useNewUrlParser: true,
 })
   .then(() => {
