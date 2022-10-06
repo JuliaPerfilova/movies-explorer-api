@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const UnauthorizedError = require('../utils/errors/UnauthorizedError');
-const { DEV_SECRET } = require('../utils/constants');
+const { DEV_SECRET, MESSAGES } = require('../utils/constants');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -20,7 +20,7 @@ module.exports = (req, res, next) => {
       NODE_ENV === 'production' ? JWT_SECRET : DEV_SECRET,
     );
   } catch (err) {
-    next(new UnauthorizedError('Невалидный jwt-токен'));
+    next(new UnauthorizedError(MESSAGES.INVALID_TOKEN));
   }
   req.user = payload;
 

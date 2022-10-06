@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { urlRegex } = require('../utils/constants');
+const { urlRegex, MESSAGES } = require('../utils/constants');
 
 const movieSchema = new mongoose.Schema({
   country: {
@@ -27,7 +27,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (link) => urlRegex.test(link),
-      message: 'Введен некорректный URL',
+      message: MESSAGES.WRONG_URL,
     },
   },
   trailerLink: {
@@ -35,7 +35,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (link) => urlRegex.test(link),
-      message: 'Введен некорректный URL',
+      message: MESSAGES.WRONG_URL,
     },
   },
   thumbnail: {
@@ -43,7 +43,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (link) => urlRegex.test(link),
-      message: 'Введен некорректный URL',
+      message: MESSAGES.WRONG_URL,
     },
   },
   owner: {
@@ -52,7 +52,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
   },
   movieId: {
-    type: String,
+    type: Number,
     required: true,
   },
   nameRU: {

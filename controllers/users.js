@@ -3,9 +3,8 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const NotFoundError = require('../utils/errors/NotFoundError');
 const BadRequestError = require('../utils/errors/BadRequestError');
-const UnauthorizedError = require('../utils/errors/UnauthorizedError');
 const ConflictError = require('../utils/errors/ConflictError');
-const { ERROR_MESSAGES } = require('../utils/errorConstants');
+const { MESSAGES } = require('../utils/constants');
 const { DEV_SECRET } = require('../utils/constants');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
@@ -28,8 +27,13 @@ module.exports.updateProfile = (req, res, next) => {
     })
     .then((user) => res.send({ data: user }))
     .catch((err) => {
-      if (err.name === 'ValidationError') next(new BadRequestError());
-      else next(err);
+      if (err.name === 'ValidationError') {
+        next(new BadRequestError());
+      } else if (err.code === 11000) {
+        next(new ConflictError(MESSAGES.EMAIL_IN_USE));
+      } else {
+        next(err);
+      }
     });
 };
 
@@ -44,11 +48,9 @@ module.exports.login = (req, res, next) => {
         { expiresIn: '7d' },
       );
 
-      res.send({ token, message: 'Успешная авторизация' });
+      res.send({ token, message: MESSAGES.AUTHORIZATION_SUCCESSFUL });
     })
-    .catch(() => {
-      next(new UnauthorizedError(ERROR_MESSAGES.WRONG_USER_DATA));
-    });
+    .catch(next);
 };
 
 module.exports.createUser = (req, res, next) => {
@@ -66,10 +68,9 @@ module.exports.createUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequestError(ERROR_MESSAGES.WRONG_INPUT_DATA));
-      }
-      if (err.code === 11000) {
-        next(new ConflictError(ERROR_MESSAGES.CONFLICT));
+        next(new BadRequestError(MESSAGES.WRONG_INPUT_DATA));
+      } else if (err.code === 11000) {
+        next(new ConflictError(MESSAGES.CONFLICT));
       } else {
         next(err);
       }

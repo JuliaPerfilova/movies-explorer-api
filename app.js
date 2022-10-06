@@ -28,6 +28,7 @@ mongoose.connect(DB_ADDRESS, {
     console.log(`Ошибка: ${err}`);
   });
 
+app.use(requestLogger);
 app.use(rateLimiter);
 app.use(helmet());
 
@@ -36,8 +37,6 @@ app.options('*', cors());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-app.use(requestLogger);
 app.use('/', router);
 app.use(errorLogger);
 

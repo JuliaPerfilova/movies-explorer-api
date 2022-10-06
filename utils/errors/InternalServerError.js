@@ -1,7 +1,7 @@
-const { ERROR_CODES, ERROR_MESSAGES } = require('../errorConstants');
+const { ERROR_CODES, MESSAGES } = require('../constants');
 
 class InternalServerError extends Error {
-  constructor(message = ERROR_MESSAGES.INTERNAL_SERVER_ERROR) {
+  constructor(message = MESSAGES.INTERNAL_SERVER_ERROR) {
     super(message);
     this.statusCode = ERROR_CODES.INTERNAL_SERVER_ERROR;
   }
